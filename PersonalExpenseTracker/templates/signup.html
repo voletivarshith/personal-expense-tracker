@@ -3,8 +3,8 @@
         <title>Sign up</title>
     </head>
     <body>
-        {% for message in get_flashed_messages() %}
-            <p>{{message}}</p>
+        {% for category,message in get_flashed_messages(with_categories=true) %}
+            <p class="msgs-{{category}}">{{message}}</p>
         {% endfor %}
         <form method="POST">
             <p>First name</p>
