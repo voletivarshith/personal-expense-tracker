@@ -84,9 +84,17 @@ def createBudget():
 		flash("Created budget successfully")
 		return redirect("dashboard")
 	return render_template("addbudget.html")
+
 @app.route("/budget/<id>/",methods=["GET"])
 def budgetID(id):
-	return render_template("budgetID.html",budget=Budget.query.get(id))
+	budget = Budget.query.get(id)
+	amount = []
+	category = []
+	for i in budget.categories:
+		amount.append(i.amount)
+		category.append(i.category)
+	import json
+	return render_template("budgetID.html",budget=Budget.query.get(id),amount = json.dumps(amount),category = json.dumps(category))
 
 @app.route("/budget/<id>/delete")
 def deleteBudget(id):

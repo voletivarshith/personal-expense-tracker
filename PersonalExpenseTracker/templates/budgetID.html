@@ -19,16 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-    <p>{{budget.name}}</p>
-    <p>{{budget.amount}}</p>
-    {% for category in budget.categories %}
-        {% if category.category != "Total" %}
-            <p>{{category.category}} {{category.amount}} <a href="{{ url_for('deleteCategory',bid=category.budget,cid=category.id) }}">Delete Transaction</a></p>
-        {% else %}
-            <p>Total {{category.amount}}</p>
-        {% endif %}    
-    {% endfor %}
-    <p><a href="{{ url_for('addCategory',id=budget.id) }}">Add Category</a></p>
     <nav>
         <div class="logo">
             <img src="https://img.icons8.com/color-glass/48/null/coin-wallet.png" />
@@ -45,7 +35,7 @@
         <div class="page-name">
             <p class="page-title">{{budget.name}}</p>
             <div class="btns">
-                <a href="" class="btn btn-primary">+ Add Transaction</a>
+                <a href="{{ url_for('addCategory',id=budget.id) }}" class="btn btn-primary">+ Add Transaction</a>
         
             </div>
         </div>
@@ -54,20 +44,14 @@
             <canvas id="myChart" style="max-width:500px"></canvas>
 
             <div class="details">
-                <p>{{budget.amount}}</p>
                 {% for category in budget.categories %}
                 <p>{{category.category}} {{category.amount}}</p>
                 {% endfor %}
-                <p><a href="#">Add Category</a></p>
-
             </div>
         </div>
-
-        
-
     </div>
-
-
+<p id="cat">{{category}}</p>
+<p id="amt">{{amount}}</p>
 
 
 
@@ -82,8 +66,8 @@
 
 
     <script>
-        var xValues = ["Food", "Vehicle", "Remaining"];
-        var yValues = [500, 1000, 4000];
+        var xValues = JSON.parse(document.getElementById("cat").innerHTML);
+        var yValues = JSON.parse(document.getElementById("amt").innerHTML);
         var barColors = [
             "#b91d47",
             "#00aba9",
