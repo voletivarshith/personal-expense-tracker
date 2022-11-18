@@ -19,7 +19,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-
+    <p>{{budget.name}}</p>
+    <p>{{budget.amount}}</p>
+    {% for category in budget.categories %}
+        {% if category.category != "Total" %}
+            <p>{{category.category}} {{category.amount}} <a href="{{ url_for('deleteCategory',bid=category.budget,cid=category.id) }}">Delete Transaction</a></p>
+        {% else %}
+            <p>Total {{category.amount}}</p>
+        {% endif %}    
+    {% endfor %}
+    <p><a href="{{ url_for('addCategory',id=budget.id) }}">Add Category</a></p>
     <nav>
         <div class="logo">
             <img src="https://img.icons8.com/color-glass/48/null/coin-wallet.png" />

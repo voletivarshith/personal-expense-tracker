@@ -78,7 +78,7 @@ def createBudget():
 		budget = Budget(name=request.form.get("name"),amount=request.form.get("amount"),user=User.query.filter_by(id=current_user.id).first().id,is_active=True)
 		db.session.add(budget)
 		db.session.commit()
-		totalCategory = Category(amount = request.form.get("amount"),category="Total",budget=budget.id)
+		totalCategory = Category(amount = int(request.form.get("amount")),category="Total",budget=budget.id)
 		db.session.add(totalCategory)
 		db.session.commit()
 		flash("Created budget successfully")
@@ -95,3 +95,29 @@ def deleteBudget(id):
 	db.session.commit()
 	flash("Budget deleted successfully")
 	return redirect(url_for("dashboard"))
+
+@app.route("/add-category/<id>/",methods=["POST","GET"])
+def addCategory(id):
+	if request.method=="POST":
+		category = Category(budget=id,category=request.form.get("category"),amount=int(request.form.get("amount")))
+		total_category = Category.query.filter_by(budget=id,category="Total").first()
+		total_category.amount = total_category.amount-int(request.form.get("amount"))
+		if(total_category.amount<=0):
+			sendMail()
+		db.session.add(category)
+		db.session.add(total_category)
+		db.session.commit()
+		return redirect(url_for("budgetID",id=id))
+	return render_template("addcategory.html")
+
+@app.route("/delete-category/<bid>/<cid>/",methods=["GET","POST"])
+def deleteCategory(bid,cid):
+	category = Category.query.filter_by(budget=bid,id=cid).first()
+	total_category = Category.query.filter_by(category="Total",budget=bid).first()
+	total_category.amount = total_category.amount + (category.amount)
+	db.session.delete(category)
+	db.session.commit()
+	return redirect(url_for("budgetID",id=bid))
+
+def sendMail():
+	pass
