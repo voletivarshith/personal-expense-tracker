@@ -14,6 +14,14 @@
 
     </head>
     <body>
+
+
+        <nav>
+            <img src="https://img.icons8.com/color-glass/48/null/coin-wallet.png" />
+            <a href=""> Personal Expense Tracker</a>
+        
+        </nav>
+
         {% for category,message in get_flashed_messages(with_categories=true) %}
             <p class="msgs-{{category}}">{{message}}</p>
         {% endfor %}
@@ -22,6 +30,8 @@
         
         
         <form method="POST">
+
+
                 <h2>Signup</h2>
                 <p>Create a new account</p>
                 <br>
