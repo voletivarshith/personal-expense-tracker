@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Budget</title>
+</head>
+<body>
+    <p>{{budget.name}}</p>
+    <p>{{budget.amount}}</p>
+    {% for category in budget.categories %}
+        <p>{{category.category}} {{category.amount}}</p>
+    {% endfor %}
+    <p><a href="#">Add Category</a></p>
+</body>
+</html>

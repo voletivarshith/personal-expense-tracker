@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title></title>
 </head>
 <body>
-    <p>Dashboard</p>
-    
+    {% for message in get_flashed_messages() %}
+        <p>{{message}}</p>
+    {% endfor %}
+    {% for budget in budgets %}
+        <p><a href="{{ url_for('budgetID',id=budget.id) }}">{{budget.name}}</a></p>
+        <p><a href="{{ url_for('deleteBudget',id=budget.id) }}">Delete Budget</a></p>
+        <p>{{budget.amount}}</p>
+    {% endfor %}
+    <p>You are successfully logged in</p>
+    <p><a href="{{ url_for('createBudget') }}">+ Create Budget</a></p>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
 </body>
 </html>

@@ -19,18 +19,16 @@ class User(db.Model,UserMixin):
         return str(self.userName)
 class Budget(db.Model):
     id = db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String(20),nullable=False)
     amount = db.Column(db.Integer,nullable=True)
     created = db.Column(db.Date,default=date.today)
     user = db.Column(db.Integer,db.ForeignKey("user.id"),nullable=True)
-    categories = db.relationship("Expense",backref="",lazy=True)
+    categories = db.relationship("Category",backref="",lazy=True)
     is_active = db.Column(db.Boolean,default=True)
+    def __str__(self):
+        return str(self.name)
 class Category(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
-    category = db.Column(db.String(20),unique=True)
-    def __repr__(self):
-        return self.category
-class Expense(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     budget = db.Column(db.Integer,db.ForeignKey("budget.id"),nullable=True)
     amount = db.Column(db.Integer,default=0)
-    category = db.Column(db.Integer,db.ForeignKey("category.id"))
+    category = db.Column(db.String(20))
