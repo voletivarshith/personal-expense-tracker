@@ -20,7 +20,7 @@ def dashboard():
 
 @app.route("/")
 def hello():
-	return "Personal Expense Tracker"
+	return render_template("home.html")
 
 @app.route("/login",methods=["POST","GET"])
 def login():
@@ -96,7 +96,7 @@ def budgetID(id):
 	import json
 	return render_template("budgetID.html",budget=Budget.query.get(id),amount = json.dumps(amount),category = json.dumps(category))
 
-@app.route("/budget/<id>/delete")
+@app.route("/budget/<id>/delete")	
 def deleteBudget(id):
 	budget = Budget.query.get(id)
 	db.session.delete(budget)
@@ -111,7 +111,7 @@ def addCategory(id):
 		total_category = Category.query.filter_by(budget=id,category="Total").first()
 		total_category.amount = total_category.amount-int(request.form.get("amount"))
 		if(total_category.amount<=0):
-			sendMail()
+			sendMail(Budget.query.get(id).name,-total_category.amount,current_user.email)
 		db.session.add(category)
 		db.session.add(total_category)
 		db.session.commit()
@@ -127,5 +127,21 @@ def deleteCategory(bid,cid):
 	db.session.commit()
 	return redirect(url_for("budgetID",id=bid))
 
-def sendMail():
-	pass
+def sendMail(name,amount,email):
+	print(name,amount)
+	import os
+	from sendgrid import SendGridAPIClient
+	from sendgrid.helpers.mail import Mail
+	message = Mail(
+    from_email='111519205057@smartinternz.com',
+    to_emails=email,
+    subject='From Personal Expense Tracker',
+    html_content="<strong>Alert for budget {}<strong><br>exceeded {}".format(name,amount))
+	try:
+		import os
+		from dotenv import load_dotenv
+		load_dotenv()
+		sg = SendGridAPIClient(os.getenv('SENDGRID_API_KEY'))
+		response = sg.send(message)
+	except Exception as e:
+		print(e.message)

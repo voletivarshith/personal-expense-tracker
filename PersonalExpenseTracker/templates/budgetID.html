@@ -44,15 +44,14 @@
 
         <div class="chart">
             <canvas id="myChart" style="max-width:500px"></canvas>
-
             <div class="details">
                 <p>Total : <span id="total-amt"></span></p>
                 {% for category in budget.categories %}
-                {% if category.category=="Total" %}
-                <p>Remaining amount : <span>{{category.amount}}</span></p>
-                {% else %}
-                <p>{{category.category}} : <span>{{category.amount}}</span></p>
-                {% endif %}
+                    {% if category.category=="Total" %}
+                        <p>Remaining amount : <span>{{category.amount}}</span></p>
+                    {% else %}
+                        <p>{{category.category}} : <span>{{category.amount}}</span></p>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
