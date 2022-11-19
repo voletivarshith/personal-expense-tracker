@@ -21,11 +21,13 @@
 <body>
     <nav>
         <div class="logo">
-            <img src="https://img.icons8.com/color-glass/48/null/coin-wallet.png" />
+            <img src="https://img.icons8.com/color-glass/32/null/coin-wallet.png" />
             <a href=""> Personal Expense Tracker</a>
         </div>
     
         <ul>
+            <li><a href="{{ url_for('dashboard') }}"><i class="fa fa-home" aria-hidden="true"></i> Dashboard</a></li>
+
             <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
         </ul>
     </nav>
@@ -44,14 +46,22 @@
             <canvas id="myChart" style="max-width:500px"></canvas>
 
             <div class="details">
+                <p>Total : <span id="total-amt"></span></p>
                 {% for category in budget.categories %}
-                <p>{{category.category}} {{category.amount}}</p>
+                {% if category.category=="Total" %}
+                <p>Remaining amount : <span>{{category.amount}}</span></p>
+                {% else %}
+                <p>{{category.category}} : <span>{{category.amount}}</span></p>
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
     </div>
-<p id="cat">{{category}}</p>
-<p id="amt">{{amount}}</p>
+
+
+
+    <p id="cat">{{category}}</p>
+    <p id="amt">{{amount}}</p>
 
 
 
@@ -66,12 +76,24 @@
 
 
     <script>
+
+        
+
         var xValues = JSON.parse(document.getElementById("cat").innerHTML);
         var yValues = JSON.parse(document.getElementById("amt").innerHTML);
+
+        var total = 0;
+        for(var i=0;i<yValues.length;i++){
+            total = total+yValues[i];
+        }
+
+        document.getElementById('total-amt').innerHTML=total;
+
         var barColors = [
-            "#b91d47",
-            "#00aba9",
-            "#2b5797"
+            "#0075A4",
+            "#00AF82",
+            "#F3BC00",
+            "#94C031"
         ];
 
         new Chart("myChart", {
