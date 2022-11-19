@@ -135,7 +135,7 @@ def sendMail(name,amount,email):
 	message = Mail(
     from_email='111519205057@smartinternz.com',
     to_emails=email,
-    subject='From Personal Expense Tracker',
+    subject='You Exceeded the budget!!!',
     html_content="<strong>Alert for budget {}<strong><br>exceeded {}".format(name,amount))
 	try:
 		import os
